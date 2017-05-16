@@ -281,8 +281,7 @@ public class FormEntryModel {
         if (!currentFormIndex.equals(index)) {
             // See if a hint exists that says we should have a model for this
             // already
-            createModelIfNecessary(index);
-            currentFormIndex = index;
+            currentFormIndex = createModelIfNecessary(index);
         }
     }
 
@@ -440,7 +439,7 @@ public class FormEntryModel {
      * @param index The index to be evaluated as to whether the underlying model is
      *        hinted to exist
      */
-    private void createModelIfNecessary(FormIndex index) {
+    private FormIndex createModelIfNecessary(FormIndex index) {
         if (index.isInForm()) {
             IFormElement e = getForm().getChild(index);
             if (e instanceof GroupDef) {
@@ -454,21 +453,28 @@ public class FormEntryModel {
                         long fullcount = ((Integer) count.getValue()).intValue();
                         TreeReference ref = getForm().getChildInstanceRef(index);
                         TreeElement element = getForm().getMainInstance().resolveReference(ref);
-                        if (element == null) {
-                            if (index.getTerminal().getInstanceIndex() < fullcount) {
-
-                              try {
+                        int currentInstanceIndex = index.getTerminal().getInstanceIndex();
+                        if (currentInstanceIndex < fullcount && element == null) {
+                            try {
                                 getForm().createNewRepeat(index);
-                              } catch (InvalidReferenceException ire) {
+                            } catch (InvalidReferenceException ire) {
                                 ire.printStackTrace();
                                 throw new RuntimeException("Invalid Reference while creting new repeat!" + ire.getMessage());
-                              }
+                            }
+                        } else if (currentInstanceIndex >= fullcount && element != null) {
+                            FormIndex formIndex = getForm().deleteRepeat(index);
+                            if (getForm().getMainInstance().resolveReference(formIndex.getReference()) == null) { // this means the last repeat group has been deleted, we should move current form index one step forward
+                                formIndex = incrementIndex(formIndex);
+                                return formIndex;
+                            } else { // this means there are more repeat groups to be deleted, step recursively into the method and continue with deleting extraneous repeat groups
+                                return createModelIfNecessary(formIndex);
                             }
                         }
                     }
                 }
             }
         }
+        return index;
     }
 
 

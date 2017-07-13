@@ -143,7 +143,7 @@ public class XFormParser implements IXFormParserFunctions {
     private List<String> namedActions;
     private HashMap<String, IElementHandler> structuredActions;
 
-
+    private Map<String, String> namespacePrefixesByUri;
 
     //incremented to provide unique question ID for each question
     private int serialQuestionID = 1;
@@ -318,7 +318,8 @@ public class XFormParser implements IXFormParserFunctions {
                 _xmldoc = getXMLDocument(_reader, stringCache);
             }
 
-            parseDoc(buildNamespacesMap());
+            namespacePrefixesByUri = buildNamespacesMap();
+            parseDoc();
 
             //load in a custom xml instance, if applicable
             if (_instReader != null) {
@@ -439,7 +440,7 @@ public class XFormParser implements IXFormParserFunctions {
         return doc;
     }
 
-    private void parseDoc(Map<String, String> namespacePrefixesByUri) {
+    private void parseDoc() {
         _f = new FormDef();
 
         initState();

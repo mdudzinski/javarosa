@@ -2,6 +2,8 @@ package org.javarosa.xform.parse;
 
 import org.javarosa.core.model.FormDef;
 import org.javarosa.core.model.RangeQuestion;
+import org.javarosa.form.api.FormEntryController;
+import org.javarosa.form.api.FormEntryModel;
 import org.junit.Test;
 
 import java.io.FileReader;
@@ -47,6 +49,10 @@ public class XFormParserTest {
         ParseResult parseResult = parse("meta-namespace-form.xml");
         assertEquals(parseResult.formDef.getTitle(), "Namespace for Metadata");
         assertEquals("Number of error messages", 0, parseResult.errorMessages.size());
+        FormEntryModel fem = new FormEntryModel(parseResult.formDef);
+        FormEntryController fec = new FormEntryController(fem);
+
+        System.out.print("ss");
     }
 
     private ParseResult parse(String formName) throws IOException {

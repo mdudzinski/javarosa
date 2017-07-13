@@ -108,6 +108,7 @@ import org.javarosa.xpath.expr.XPathStringLiteral;
 	private int flags = MASK_RELEVANT | MASK_ENABLED | MASK_RELEVANT_INH | MASK_ENABLED_INH;
 
 	private String namespace;
+	private String prefix;
 
 	private String instanceName = null;
 

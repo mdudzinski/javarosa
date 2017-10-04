@@ -44,13 +44,11 @@ import org.javarosa.core.model.util.restorable.RestoreUtils;
 import org.javarosa.core.services.Logger;
 import org.javarosa.core.services.locale.Localizer;
 import org.javarosa.core.services.locale.TableLocaleSource;
-import org.javarosa.core.util.CacheTable;
 import org.javarosa.core.util.OrderedMap;
 import org.javarosa.core.util.PrefixTreeNode;
 import org.javarosa.core.util.externalizable.PrototypeFactory;
 import org.javarosa.core.util.externalizable.PrototypeFactoryDeprecated;
 import org.javarosa.model.xform.XPathReference;
-import org.javarosa.xform.util.InterningKXmlParser;
 import org.javarosa.xform.util.XFormAnswerDataParser;
 import org.javarosa.xform.util.XFormSerializer;
 import org.javarosa.xform.util.XFormUtils;
@@ -291,8 +289,6 @@ public class XFormParser implements IXFormParserFunctions {
 
     XFormParserReporter reporter = new XFormParserReporter();
 
-    CacheTable<String> stringCache;
-
     public XFormParser(Reader reader) {
         _reader = reader;
     }
@@ -320,7 +316,7 @@ public class XFormParser implements IXFormParserFunctions {
             Std.out.println("Parsing form...");
 
             if (_xmldoc == null) {
-                _xmldoc = getXMLDocument(_reader, stringCache);
+                _xmldoc = getXMLDocument(_reader);
             }
 
             parseDoc(buildNamespacesMap(_xmldoc.getRootElement()));
@@ -347,20 +343,10 @@ public class XFormParser implements IXFormParserFunctions {
     }
 
     public static Document getXMLDocument(Reader reader) throws IOException  {
-        return getXMLDocument(reader, null);
-    }
-
-    public static Document getXMLDocument(Reader reader, CacheTable<String> stringCache) throws IOException  {
         Document doc = new Document();
 
         try{
-            KXmlParser parser;
-
-            if(stringCache != null) {
-                parser = new InterningKXmlParser(stringCache);
-            } else {
-                parser = new KXmlParser();
-            }
+            KXmlParser parser = new KXmlParser();
 
             parser.setInput(reader);
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
@@ -388,7 +374,7 @@ public class XFormParser implements IXFormParserFunctions {
             Std.out.println("Error closing reader");
             Std.printStack(e);
         }
-        XmlTextConsolidator.consolidateText(stringCache, doc.getRootElement());
+        XmlTextConsolidator.consolidateText(doc.getRootElement());
 
         return doc;
     }
@@ -2068,7 +2054,4 @@ public class XFormParser implements IXFormParserFunctions {
         return elementString;
     }
 
-    void setStringCache(CacheTable<String> stringCache) {
-        this.stringCache = stringCache;
-    }
 }

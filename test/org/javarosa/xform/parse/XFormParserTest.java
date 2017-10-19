@@ -274,6 +274,15 @@ public class XFormParserTest {
         assertEquals("Number of error messages", 0, parseResult.errorMessages.size());
     }
 
+    @Test public void parseIMCIbyDTreeForm() throws IOException {
+        // Given & When
+        ParseResult parseResult = parse(r("eIMCI-by-D-Tree.xml"));
+
+        // Then
+        assertEquals(parseResult.formDef.getTitle(), "eIMCI by D-Tree");
+        assertEquals("Number of error messages", 0, parseResult.errorMessages.size());
+    }
+
     private ParseResult parse(Path formName) throws IOException {
         XFormParser parser = new XFormParser(new FileReader(formName.toString()));
         final List<String> errorMessages = new ArrayList<>();

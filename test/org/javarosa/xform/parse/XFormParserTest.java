@@ -265,6 +265,15 @@ public class XFormParserTest {
         assertEquals(AUDIT_3_ANSWER, audit3.getValue().getValue());
     }
 
+    @Test public void parseFormWithTemplateRepeat() throws IOException {
+        // Given & When
+        ParseResult parseResult = parse(r("template-repeat.xml"));
+
+        // Then
+        assertEquals(parseResult.formDef.getTitle(), "Repeat with template");
+        assertEquals("Number of error messages", 0, parseResult.errorMessages.size());
+    }
+
     private ParseResult parse(Path formName) throws IOException {
         XFormParser parser = new XFormParser(new FileReader(formName.toString()));
         final List<String> errorMessages = new ArrayList<>();

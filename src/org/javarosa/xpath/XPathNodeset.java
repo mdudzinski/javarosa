@@ -5,6 +5,7 @@ import org.javarosa.core.model.instance.DataInstance;
 import org.javarosa.core.model.instance.TreeReference;
 import org.javarosa.xpath.expr.XPathPathExpr;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ import java.util.List;
  * instance.
  *
  * 2) A nodeset which wasn't able to reference into any known model (generally a reference which is
- * written in error). In this state, the size of the nodeset can be evaluated, but the acual reference
+ * written in error). In this state, the size of the nodeset can be evaluated, but the actual reference
  * cannot be returned, since it doesn't have any semantic value.
  *
  * (2) may be a deviation from normal XPath. This should be evaluated in the future.
@@ -130,6 +131,25 @@ public class XPathNodeset {
             return 0;
         }
         return nodes.size();
+    }
+
+    /**
+     * @return The number of nodes that are not empty
+     */
+    public int nonEmptySize() {
+        if(nodes == null) {
+            return 0;
+        }
+
+        int count = 0;
+        for (TreeReference node : nodes) {
+            String value = node.toString();
+            if (value != null && value.length() > 0) {
+                count += 1;
+            }
+        }
+
+        return count;
     }
 
     public TreeReference getRefAt (int i) {

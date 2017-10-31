@@ -438,7 +438,7 @@ public class XPathEvalTest extends TestCase {
         testEval("concat('ab','cde','','fgh',1,false(),'ijklmnop')", null, ec, "abcdefgh1falseijklmnop");
         testEval("check-types(55, '55', false(), '1999-09-09', get-custom(false()))", null, ec, TRUE);
         testEval("check-types(55, '55', false(), '1999-09-09', get-custom(true()))", null, ec, TRUE);
-
+        
         logTestCategory("regex");
         testEval("regex('12345','[0-9]+')", null, ec, TRUE);
         testEval("pow(2, 2)", 4.0);

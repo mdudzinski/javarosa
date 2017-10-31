@@ -5,7 +5,6 @@ import org.javarosa.core.model.instance.DataInstance;
 import org.javarosa.core.model.instance.TreeReference;
 import org.javarosa.xpath.expr.XPathPathExpr;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

@@ -1252,8 +1252,7 @@ public class XPathFuncExpr extends XPathExpression {
             return o;
         }
     }
-
-
+    
     /**
      * Throws an arity exception if expected arity doesn't match the provided arity.
      *

@@ -135,16 +135,16 @@ public class XPathNodeset {
     /**
      * @return The number of nodes that are not empty
      */
-    public int nonEmptySize() {
-        if(nodes == null) {
+    public int getNonEmptySize() {
+        if (nodes == null) {
             return 0;
         }
 
         int count = 0;
         for (TreeReference node : nodes) {
             String value = node.toString();
-            if (value != null && value.length() > 0) {
-                count += 1;
+            if (value != null && !value.isEmpty()) {
+                ++count;
             }
         }
 

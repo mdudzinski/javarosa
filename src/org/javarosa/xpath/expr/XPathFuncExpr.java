@@ -1026,12 +1026,12 @@ public class XPathFuncExpr extends XPathExpression {
      * @param o NodeSet to evaluate. Throws if not a NodeSet
      * @return the number of non-empty nodes in argument node-set.
      */
-    public static Double countNonEmpty (Object o) {
+    private int countNonEmpty (Object o) {
         if (o instanceof XPathNodeset) {
-            return (double) ((XPathNodeset) o).nonEmptySize();
-        } else {
-            throw new XPathTypeMismatchException("not a nodeset");
+            return ((XPathNodeset) o).getNonEmptySize();
         }
+
+        throw new XPathTypeMismatchException("not a nodeset");
     }
 
 
@@ -1252,7 +1252,7 @@ public class XPathFuncExpr extends XPathExpression {
             return o;
         }
     }
-    
+
     /**
      * Throws an arity exception if expected arity doesn't match the provided arity.
      *

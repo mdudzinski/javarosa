@@ -502,24 +502,6 @@ public class XPathEvalTest extends TestCase {
         data.addChild(new TreeElement("path", 0));
         data.addChild(new TreeElement("path", 1));
         data.addChild(new TreeElement("path", 2));
-//        TreeElement root = new TreeElement("data");
-//        TreeElement repeat = new TreeElement("repeat");
-//        TreeElement repeatChild = new TreeElement("name");
-//        repeatChild.setAnswer(new StringData("A"));
-//        repeat.addChild(repeatChild);
-//        root.addChild(repeat);
-//
-//        repeat = new TreeElement("repeat");
-//        repeatChild = new TreeElement("name");
-//        repeatChild.setAnswer(new StringData("B"));
-//        repeat.addChild(repeatChild);
-//        root.addChild(repeat);
-//
-//        repeat = new TreeElement("repeat");
-//        repeatChild = new TreeElement("name");
-//        repeatChild.setAnswer(new StringData("C"));
-//        repeat.addChild(repeatChild);
-//        root.addChild(repeat);
 
         return new FormInstance(data);
     }

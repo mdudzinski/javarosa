@@ -24,7 +24,11 @@ import org.javarosa.core.model.condition.IFunctionHandler;
 import org.javarosa.core.model.instance.FormInstance;
 import org.javarosa.core.model.instance.TreeElement;
 import org.javarosa.core.model.utils.DateUtils;
-import org.javarosa.xpath.*;
+import org.javarosa.xpath.IExprDataType;
+import org.javarosa.xpath.XPathParseTool;
+import org.javarosa.xpath.XPathTypeMismatchException;
+import org.javarosa.xpath.XPathUnhandledException;
+import org.javarosa.xpath.XPathUnsupportedException;
 import org.javarosa.xpath.expr.XPathExpression;
 import org.javarosa.xpath.expr.XPathFuncExpr;
 import org.javarosa.xpath.parser.XPathSyntaxException;
@@ -654,7 +658,7 @@ public class XPathEvalTest extends TestCase {
             @Override
             public boolean realTime () { return false; }
             @Override
-            public Object eval (Object[] args, EvaluationContext ec) { return new IExprDataType () {
+            public Object eval (Object[] args, EvaluationContext ec) { return new IExprDataType() {
                     @Override
                     public Boolean toBoolean () { return TRUE; }
                     @Override

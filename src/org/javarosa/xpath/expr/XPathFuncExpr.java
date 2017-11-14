@@ -1021,7 +1021,7 @@ public class XPathFuncExpr extends XPathExpression {
     }
 
     /**
-     * A node is considered non-empty if it is convertible into a string with a greater-than zero length.
+     * A node is considered non-empty if it is convertible into a string with a greater-than-zero length.
      *
      * @param o NodeSet to evaluate. Throws if not a NodeSet
      * @return the number of non-empty nodes in argument node-set.

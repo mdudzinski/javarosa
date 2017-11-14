@@ -27,6 +27,7 @@ import junit.framework.TestSuite;
 
 import org.javarosa.core.model.condition.EvaluationContext;
 import org.javarosa.core.model.condition.IFunctionHandler;
+import org.javarosa.core.model.data.StringData;
 import org.javarosa.core.model.instance.FormInstance;
 import org.javarosa.core.model.instance.TreeElement;
 import org.javarosa.core.model.utils.DateUtils;
@@ -120,6 +121,12 @@ public class XPathEvalTest extends TestCase {
         EvaluationContext ec = getFunctionHandlers();
 
         FormInstance instance = createTestInstance();
+
+        FormInstance countNonEmptyInstance = createCountNonEmptyTestInstance();
+
+        logTestCategory("counting");
+        testEval("count(/data)", countNonEmptyInstance, null, 1.0);
+        testEval("count-non-empty(/data/path)", countNonEmptyInstance, null, 3);
 
         logTestCategory("unsupporteds");
         testEval("/union | /expr", new XPathUnsupportedException());
@@ -487,6 +494,33 @@ public class XPathEvalTest extends TestCase {
     public FormInstance createTestInstance() {
         TreeElement data = new TreeElement("data");
         data.addChild(new TreeElement("path"));
+        return new FormInstance(data);
+    }
+
+    public FormInstance createCountNonEmptyTestInstance() {
+        TreeElement data = new TreeElement("data");
+        data.addChild(new TreeElement("path", 0));
+        data.addChild(new TreeElement("path", 1));
+        data.addChild(new TreeElement("path", 2));
+//        TreeElement root = new TreeElement("data");
+//        TreeElement repeat = new TreeElement("repeat");
+//        TreeElement repeatChild = new TreeElement("name");
+//        repeatChild.setAnswer(new StringData("A"));
+//        repeat.addChild(repeatChild);
+//        root.addChild(repeat);
+//
+//        repeat = new TreeElement("repeat");
+//        repeatChild = new TreeElement("name");
+//        repeatChild.setAnswer(new StringData("B"));
+//        repeat.addChild(repeatChild);
+//        root.addChild(repeat);
+//
+//        repeat = new TreeElement("repeat");
+//        repeatChild = new TreeElement("name");
+//        repeatChild.setAnswer(new StringData("C"));
+//        repeat.addChild(repeatChild);
+//        root.addChild(repeat);
+
         return new FormInstance(data);
     }
     

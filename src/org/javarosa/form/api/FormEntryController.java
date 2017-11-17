@@ -152,6 +152,9 @@ public class FormEntryController {
         if (data != null || element.getValue() != null) {
             // we should check if the data to be saved is already the same as
             // the data in the model, but we can't (no IAnswerData.equals())
+            if (element.getValue() != null && data.getValue().equals(element.getValue().getValue())) {
+                return true;
+            }
             model.getForm().setValue(data, index.getReference(), element, midSurvey);
             return true;
         } else {

@@ -328,8 +328,12 @@ public class XPathFuncExpr extends XPathExpression {
             assertArgsCount(name, args, 0);
             return DateUtils.roundDate(new Date());
         } else if (name.equals("now")) {
-            assertArgsCount(name, args, 0);
-            return new Date();
+            if (args.length == 0 || args.length == 1) {
+                return new Date();
+            } else {
+                throw new XPathUnhandledException("function \'" + name +
+                        "\' requires either exactly one argument or no arguments. " + args.length + " arguments provided.");
+            }
         } else if (name.equals("concat")) {
             if (args.length == 1 && argVals[0] instanceof XPathNodeset) {
                 return join("", ((XPathNodeset) argVals[0]).toArgList());

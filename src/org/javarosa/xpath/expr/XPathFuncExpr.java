@@ -384,7 +384,7 @@ public class XPathFuncExpr extends XPathExpression {
             //calculated expressions may be recomputed w/o warning! use with caution!!
             return MathUtils.getRand().nextDouble();
         } else if (name.equals("once")) {
-            assertArgsCount(name, args, 1);
+//            assertArgsCount(name, args, 1);
             XPathPathExpr currentFieldPathExpr = XPathPathExpr.fromRef(evalContext.getContextRef());
             Object currValue = currentFieldPathExpr.eval(model, evalContext).unpack();
             if (currValue == null || toString(currValue).length() == 0) {

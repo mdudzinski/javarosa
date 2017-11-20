@@ -70,24 +70,21 @@ public class Safe2014DagImplTest {
         assertThat(repeats.get(3).getChildAt(0).getValue().getDisplayText(), equalTo("4"));
 
         // check that calculations have not been triggered for the repeat group prior to the deleted one
-        assertThat(dagEvents.get(0).getDisplayMessage(),
-                equalTo("Processing 'Recalculate' for no [2_1] (2.0)"));
-        assertThat(dagEvents.get(1).getDisplayMessage(),
-                equalTo("Processing 'Deleted: houseM [2]: 1 triggerables were fired.' for "));
-        assertThat(dagEvents.get(2).getDisplayMessage(),
-                equalTo("Processing 'Deleted: no [2_1]: 1 triggerables were fired.' for "));
-        assertThat(dagEvents.get(3).getDisplayMessage(),
-                equalTo("Processing 'Recalculate' for no [3_1] (3.0)"));
-        assertThat(dagEvents.get(4).getDisplayMessage(),
-                equalTo("Processing 'Deleted: houseM [3]: 1 triggerables were fired.' for "));
-        assertThat(dagEvents.get(5).getDisplayMessage(),
-                equalTo("Processing 'Deleted: no [3_1]: 1 triggerables were fired.' for "));
-        assertThat(dagEvents.get(6).getDisplayMessage(),
-                equalTo("Processing 'Recalculate' for no [4_1] (4.0)"));
-        assertThat(dagEvents.get(7).getDisplayMessage(),
-                equalTo("Processing 'Deleted: houseM [4]: 1 triggerables were fired.' for "));
-        assertThat(dagEvents.get(8).getDisplayMessage(),
-                equalTo("Processing 'Deleted: no [4_1]: 1 triggerables were fired.' for "));
+        final String[] expectedMessages = {
+                "Processing 'Recalculate' for no [2_1] (2.0)",
+                "Processing 'Deleted: houseM [2]: 1 triggerables were fired.' for ",
+                "Processing 'Deleted: no [2_1]: 1 triggerables were fired.' for ",
+                "Processing 'Recalculate' for no [3_1] (3.0)",
+                "Processing 'Deleted: houseM [3]: 1 triggerables were fired.' for ",
+                "Processing 'Deleted: no [3_1]: 1 triggerables were fired.' for ",
+                "Processing 'Recalculate' for no [4_1] (4.0)",
+                "Processing 'Deleted: houseM [4]: 1 triggerables were fired.' for ",
+                "Processing 'Deleted: no [4_1]: 1 triggerables were fired.' for "
+        };
+        int messageIndex = 0;
+        for (String expectedMessage : expectedMessages) {
+            assertThat(dagEvents.get(messageIndex++).getDisplayMessage(), equalTo(expectedMessage));
+        }
     }
 
     /**

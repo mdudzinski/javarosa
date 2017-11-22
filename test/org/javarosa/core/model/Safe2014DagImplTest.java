@@ -37,7 +37,6 @@ public class Safe2014DagImplTest {
 
         formDef.setEventNotifier(eventNotifier);
         IDag dag = getIDagImplUnderTest(formDef);
-        assertThat(dag, instanceOf(Safe2014DagImpl.class));
 
         final FormInstance mainInstance = formDef.getMainInstance();
         final TreeElement parentElement = mainInstance.getRoot();
@@ -95,6 +94,7 @@ public class Safe2014DagImplTest {
     private IDag getIDagImplUnderTest(FormDef formDef) throws NoSuchFieldException, IllegalAccessException {
         Field dagImplFromFormDef = FormDef.class.getDeclaredField("dagImpl");
         dagImplFromFormDef.setAccessible(true);
+        assertThat(dagImplFromFormDef.get(formDef), instanceOf(Safe2014DagImpl.class));
         return (Safe2014DagImpl) dagImplFromFormDef.get(formDef);
     }
 

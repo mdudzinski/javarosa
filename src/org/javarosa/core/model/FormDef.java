@@ -382,6 +382,7 @@ public class FormDef implements IFormElement, Localizable, Persistable, IMetaDat
             return;
         }
         setAnswer(data, node);
+        dispatchValueChangedEvent(ref);
         Collection<QuickTriggerable> qts = triggerTriggerables(ref, midSurvey);
         dagImpl.publishSummary("New value", ref, qts);
         // TODO: pre-populate fix-count repeats here?
@@ -1684,5 +1685,12 @@ public class FormDef implements IFormElement, Localizable, Persistable, IMetaDat
      */
     public final void printTriggerables(String path) {
         dagImpl.printTriggerables(path);
+    }
+
+    private void dispatchValueChangedEvent(TreeReference context) {
+        List<Action> listeners = getEventListeners(Action.EVENT_XFORMS_VALUE_CHANGED);
+        for (Action a : listeners) {
+            a.processAction(this, context);
+        }
     }
 }

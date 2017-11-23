@@ -24,6 +24,9 @@ public class Action implements Externalizable {
     public static final String EVENT_XFORMS_REVALIDATE = "xforms-revalidate";
 
     public static final String EVENT_JR_INSERT = "jr-insert";
+
+    public static final String EVENT_XFORMS_VALUE_CHANGED = "xforms-value-changed";
+
     private String name;
 
     public Action() {

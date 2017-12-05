@@ -71,6 +71,8 @@ public class Safe2014DagImpl extends LatestDagBase {
                  mainInstance, evalContext, repeatGroup.getRef(),
                  new HashSet<QuickTriggerable>(0));
          publishSummary("Deleted", repeatGroup.getRef(), alreadyEvaluated);
+
+         evaluateChildrenTriggerables(mainInstance, evalContext, repeatGroup, false, alreadyEvaluated);
       }
    }
 

@@ -271,6 +271,45 @@ public class Safe2014DagImplTest {
         }
     }
 
+    @Test
+    public void experiment() throws IOException, NoSuchFieldException, IllegalAccessException {
+        // Given
+        final FormDef formDef =
+                parse(r("experiment.xml")).formDef;
+
+        assertIDagImplUnderTest(formDef);
+
+        formDef.initialize(false, new InstanceInitializationFactory()); // trigger all calculations
+        formDef.setEventNotifier(eventNotifier); // it's important to set the test event notifier now to avoid storing events from the above initialization
+
+        final FormInstance mainInstance = formDef.getMainInstance();
+
+        final TreeElement elementToBeDeleted = mainInstance.getRoot().getChildAt(2);
+        final TreeReference elementToBeDeletedRef = elementToBeDeleted.getRef();
+
+        // Index pointing to the second repeat group
+        final FormIndex indexToBeDeleted = new FormIndex(0, 2, elementToBeDeletedRef);
+
+        // When
+        TreeElement summaryNode = mainInstance.getRoot().getChildrenWithName("summary").get(0);
+        assertThat(summaryNode.getValue().getDisplayText(), equalTo("ABCDE"));
+
+        // Safe2014DagImplTest.deleteRepeatGroup is called by the below method
+        formDef.deleteRepeat(indexToBeDeleted);
+
+        // Then
+        final List<TreeElement> repeats = mainInstance.getRoot().getChildrenWithName("houseM");
+
+        assertThat(repeats.size(), equalTo(4));
+        assertThat(repeats.get(0).getChildAt(0).getValue().getDisplayText(), equalTo("A"));
+        assertThat(repeats.get(1).getChildAt(0).getValue().getDisplayText(), equalTo("B"));
+        assertThat(repeats.get(2).getChildAt(0).getValue().getDisplayText(), equalTo("D"));
+        assertThat(repeats.get(3).getChildAt(0).getValue().getDisplayText(), equalTo("E"));
+
+        assertThat(summaryNode.getValue().getDisplayText(), equalTo("ABDE"));
+    }
+
+
     /**
      * Assert that {@param formDef} holds the expected {@link IDag} implementation.
      * The field is private in {@link FormDef} so the reflection must be used.

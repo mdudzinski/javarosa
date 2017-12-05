@@ -6,47 +6,32 @@
             <instance>
                 <rgwp id="rgwp">
                     <houseM>
-                        <no/>
+                        <name>A</name>
                     </houseM>
                     <houseM>
-                        <no/>
+                        <name>B</name>
                     </houseM>
                     <houseM>
-                        <no/>
+                        <name>C</name>
                     </houseM>
                     <houseM>
-                        <no/>
+                        <name>D</name>
                     </houseM>
                     <houseM>
-                        <no/>
-                    </houseM>
-                    <houseM>
-                        <no/>
-                    </houseM>
-                    <houseM>
-                        <no/>
-                    </houseM>
-                    <houseM>
-                        <no/>
-                    </houseM>
-                    <houseM>
-                        <no/>
-                    </houseM>
-                    <houseM>
-                        <no/>
+                        <name>E</name>
                     </houseM>
                     <summary/>
                 </rgwp>
             </instance>
-            <bind nodeset="/rgwp/houseM/no" type="string"/>
-            <bind calculate="sum(/rgwp/houseM/no)" nodeset="/rgwp/summary" type="int"/>
+            <bind nodeset="/rgwp/houseM/name" type="string"/>
+            <bind calculate="concat(/rgwp/houseM/name)" nodeset="/rgwp/summary" type="string"/>
         </model>
     </h:head>
     <h:body>
         <group ref="/rgwp/houseM">
             <label>members</label>
             <repeat nodeset="/rgwp/houseM">
-                <input ref="/rgwp/houseM/no">
+                <input ref="/rgwp/houseM/name">
                     <label>No</label>
                 </input>
             </repeat>

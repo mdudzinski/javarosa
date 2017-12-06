@@ -6,9 +6,11 @@ import org.javarosa.core.model.instance.TreeElement;
 import org.javarosa.core.model.instance.TreeReference;
 import org.javarosa.debug.Event;
 import org.javarosa.debug.EventNotifier;
+import org.joda.time.LocalTime;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -337,6 +339,49 @@ public class Safe2014DagImplTest {
         for (String expectedMessage : expectedMessages) {
             assertThat(dagEvents.get(messageIndex++).getDisplayMessage(), equalTo(expectedMessage));
         }
+    }
+
+    @Test
+    public void deleteRepeatGroupWithCalculationsTimingTest() throws Exception {
+        // Given
+        final FormDef formDef =
+                parse(r("delete-repeat-group-with-calculations-timing-test.xml")).formDef;
+
+        assertIDagImplUnderTest(formDef);
+
+        formDef.initialize(false, new InstanceInitializationFactory()); // trigger all calculations
+
+        final FormInstance mainInstance = formDef.getMainInstance();
+
+        // Construct the required amount of repeats
+        final TreeElement templateRepeat = mainInstance.getRoot().getChildAt(0);
+        final int numberOfRepeats = 800;
+        for (int i = 0; i < numberOfRepeats; i++) {
+            final TreeReference refToNewRepeat = templateRepeat.getRef();
+            refToNewRepeat.setMultiplicity(1, i); // set the correct multiplicity
+
+            final FormIndex indexOfNewRepeat = new FormIndex(0, i, refToNewRepeat);
+            formDef.createNewRepeat(indexOfNewRepeat);
+        }
+
+        final TreeElement firstRepeat = mainInstance.getRoot().getChildAt(1);
+        final TreeReference firstRepeatRef = firstRepeat.getRef();
+        final FormIndex firstRepeatIndex = new FormIndex(0, 0, firstRepeatRef);
+
+        // When
+        long startMs = System.currentTimeMillis();
+
+        for (int i = 0; i < numberOfRepeats; i++) {
+            long currentIterationStart = System.currentTimeMillis();
+            formDef.deleteRepeat(firstRepeatIndex);
+            long took = System.currentTimeMillis() - currentIterationStart;
+            String tookFormatted = LocalTime.fromMillisOfDay(took).toString();
+            System.out.println("Deletion of repeat #" + i + " took " + tookFormatted);
+        }
+
+        // Then
+        final String elapsedFormatted = LocalTime.fromMillisOfDay(System.currentTimeMillis() - startMs).toString();
+        System.out.println("Deletion of " + numberOfRepeats + " repeats took " + elapsedFormatted);
     }
 
     /**
